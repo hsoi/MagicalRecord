@@ -56,11 +56,12 @@ static SEL errorHandlerAction = nil;
 	if (error)
 	{
         // If a custom error handler is set, call that
-        if (errorHandlerTarget != nil && errorHandlerAction != nil) 
+        id strongErrorHandlerTarget = errorHandlerTarget;
+        if (strongErrorHandlerTarget != nil && errorHandlerAction != nil)
 		{
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-            [errorHandlerTarget performSelector:errorHandlerAction withObject:error];
+            [strongErrorHandlerTarget performSelector:errorHandlerAction withObject:error];
 #pragma clang diagnostic pop
         }
 		else

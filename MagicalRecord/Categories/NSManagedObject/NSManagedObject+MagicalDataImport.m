@@ -266,12 +266,18 @@ NSString * const kMagicalRecordImportAttributeUseDefaultValueWhenNotPresent = @"
     return [self MR_performDataImportFromObject:objectData
                               relationshipBlock:^(NSRelationshipDescription *relationshipInfo, id localObjectData) {
         
-        NSManagedObject *relatedObject = [weakself MR_findObjectForRelationship:relationshipInfo withData:localObjectData];
+        typeof(self) strongSelf = weakself;
+        if (!strongSelf)
+        {
+            return;
+        }
+                                  
+        NSManagedObject *relatedObject = [strongSelf MR_findObjectForRelationship:relationshipInfo withData:localObjectData];
         
         if (relatedObject == nil)
         {
             NSEntityDescription *entityDescription = [relationshipInfo destinationEntity];
-            relatedObject = [entityDescription MR_createInstanceInContext:[weakself managedObjectContext]];
+            relatedObject = [entityDescription MR_createInstanceInContext:[strongSelf managedObjectContext]];
         }
         [relatedObject MR_importValuesForKeysWithObject:localObjectData];
         
@@ -290,7 +296,7 @@ NSString * const kMagicalRecordImportAttributeUseDefaultValueWhenNotPresent = @"
             }
         }
         
-        [weakself MR_addObject:relatedObject forRelationship:relationshipInfo];
+        [strongSelf MR_addObject:relatedObject forRelationship:relationshipInfo];
 	}];
 }
 

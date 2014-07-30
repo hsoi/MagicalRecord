@@ -25,7 +25,7 @@ static NSPersistentStore *defaultPersistentStore_ = nil;
 	defaultPersistentStore_ = store;
 }
 
-+ (NSString *) MR_directory:(int) type
++ (NSString *) MR_directory:(NSSearchPathDirectory) type
 {    
     return [NSSearchPathForDirectoriesInDomains(type, NSUserDomainMask, YES) lastObject];
 }
